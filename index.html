@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="./Assets/css/style.css">
+    <title>Wonder Weather</title>
+</head>
+
+<body>
+    <header class="header bg-dark text-light text-center">
+        <h1>Weather Dashboard</h1>
+        <p id="currentDay"></p>
+    </header>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-4 bg-light">
+                <span>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Enter City Name" aria-label="Search">
+                    <button onclick="searchWeather()" class="btn btn-outline-success my-2 my-sm-0"
+                        type="submit">Search</button>
+                </span>
+                <div class="row">
+                    <div id="searched"></div>
+                </div>
+            </div>
+
+            <div class="col-8">
+                <div class="row bg-light" id="city"></div>
+                <div id="temp">
+                    <p>Temperature:</p>
+                </div>
+                <div id="humidity">
+                    <p>Humidity:</p>
+                </div>
+                <div id="wind">
+                    <p>Wind Speed:</p>
+                </div>
+                <div id="uv">
+                    <p>UV Index:</p>
+                </div>
+                <div class="row bg-light" id="forecast"></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+    <script src="./Assets/js/script.js"></script>
+</body>
+
+</html>

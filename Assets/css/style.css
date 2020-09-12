@@ -1,0 +1,30 @@
+span {
+    display: flex;
+    padding-bottom: 3em;
+    padding-top: 1em;
+}
+
+.col-9 {
+    display: flex;
+    
+}
+
+.row {
+    padding: 1em;
+}
+
+#temp, #wind, #humidity {
+    display: flex;
+}
+
+#uv {
+    display: flex;
+}
+
+#uv h4 {
+    background-color: red;
+}
+p {
+    padding-right: 1em;
+}
+
