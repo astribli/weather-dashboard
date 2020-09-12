@@ -1,11 +1,6 @@
 span {
     display: flex;
-    padding-bottom: 3em;
-    padding-top: 1em;
-}
-
-.col-9 {
-    display: flex;
+    padding: 1em;
     
 }
 
@@ -24,7 +19,17 @@ span {
 #uv h4 {
     background-color: red;
 }
+
 p {
-    padding-right: 1em;
+    border-style: solid;
+    text-align: center;
+    width: 100%;
+    padding-left: 3em;
+    padding-right: 3em;
+    
+}
+
+div .row {
+    justify-content: center;
 }
 

@@ -16,7 +16,7 @@ var searchWeather = function () {
         .then(function (response1) {
             console.log(response1);
             var searchedCity = response1.name;
-            var history = document.createElement("h3");
+            var history = document.createElement("p");
             history.innerHTML = searchedCity;
             var searched = document.querySelector("#searched");
             searched.appendChild(history);
