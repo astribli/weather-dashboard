@@ -95,38 +95,80 @@ var searchWeather = function (input) {
             windEl.innerHTML = "Wind Speed: " + windVariables + " MPH";
             wind.appendChild(windEl);
 
-            var lat = response1.coord.lat;
-            var lon = response1.coord.lon;
-
-            fetch('https://api.openweathermap.org/data/2.5/uvi?lat=' + lat + '&lon=' + lon + '&appid=5fbadc263ee1b5151313ef1a2b7ed927')
-                .then(function (response2) {
-                    return response2.json();
+            var icon = response1.weather[0].icon;
+            fetch('https://openweathermap.org/img/wn/' + icon + '@2x.png')
+                .then(function (response) {
+                    return response;
                 })
-
-                .then(function (response2) {
-                    console.log(response2.value);
-
-                    uv = document.querySelector("#uv");
-                    uv.innerHTML = '';
-                    var uvVariables = response2.value;
-                    var uvEl = document.createElement("h4");
-                    uvEl.innerHTML = "UV Index: " + uvVariables;
-                    uv.appendChild(uvEl);
+                .then(function (response) {
+                    
+                    var iconEl = document.createElement("img");
+                    iconEl.src = response.url;
+                    city.appendChild(iconEl);
                 });
-            fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + input + '&appid=5fbadc263ee1b5151313ef1a2b7ed927')
-                .then(function (response3) {
-                    return response3.json();
-                })
 
-                .then(function (response3) {
-                    console.log(response3);
+                    var lat = response1.coord.lat;
+                    var lon = response1.coord.lon;
 
-                    var forcast = response3.list[0].weather[0].icon;
-                    var forcastEl = document.createElement("img");
-                    forcastEl.innerHTML = forcast;
-                    fiveDay = document.querySelector("#fiveDay");
-                    fiveDay.appendChild(forcastEl);
+                    fetch('https://api.openweathermap.org/data/2.5/uvi?lat=' + lat + '&lon=' + lon + '&appid=5fbadc263ee1b5151313ef1a2b7ed927')
+                        .then(function (response2) {
+                            return response2.json();
+                        })
+
+                        .then(function (response2) {
+                            console.log(response2.value);
+
+                            uv = document.querySelector("#uv");
+                            uv.innerHTML = '';
+                            var uvVariables = response2.value;
+                            var uvEl = document.createElement("h4");
+                            uvEl.innerHTML = "UV Index: " + uvVariables;
+                            uv.appendChild(uvEl);
+
+                            if (response2.value < 5) {
+                                uvEl.style.backgroundColor = "green";
+                            }
+                            if (response2.value < 8) {
+                                uvEl.style.backgroundColor = "yellow";
+                            }
+                        });
+
+                    fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + searchedCity + '&appid=5fbadc263ee1b5151313ef1a2b7ed927')
+                        .then(function (response3) {
+                            return response3.json();
+                        })
+
+                        .then(function (response3) {
+                            console.log(response3);
+
+                            var newrow = $("<div>").attr("class", "forecast");
+                            $("#fiveDay").append(newrow);
+
+
+                            //loop through array response to find the forecasts for 15:00
+                            for (var i = 0; i < response3.list.length; i++) {
+                                if (response3.list[i].dt_txt.indexOf("15:00:00") !== -1) {
+                                    var newCol = $("<div>").attr("class", "one-sixth");
+                                    newrow.append(newCol);
+
+                                    var newCard = $("<div>").attr("class", "card text-white bg-primary");
+                                    newCol.append(newCard);
+
+                                    var cardHead = $("<div>").attr("class", "card-header").text(moment(response3.list[i].dt, "X").format("MMM Do"));
+                                    newCard.append(cardHead);
+
+                                    var cardImg = $("<img>").attr("class", "card-img-top").attr("src", "https://openweathermap.org/img/wn/" + response3.list[i].weather[0].icon + "@2x.png");
+                                    newCard.append(cardImg);
+
+                                    var bodyDiv = $("<div>").attr("class", "card-body");
+                                    newCard.append(bodyDiv);
+
+                                    bodyDiv.append($("<p>").attr("class", "card-text").html("Temp: " + response3.list[i].main.temp + " &#8457;"));
+                                    bodyDiv.append($("<p>").attr("class", "card-text").text("Humidity: " + response3.list[i].main.humidity + "%"));
+
+                                }
+                            }
+                        });
                 });
-        });
-}
+        }
 
