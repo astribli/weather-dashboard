@@ -20,16 +20,22 @@ span {
     background-color: red;
 }
 
-p {
+button {
     border-style: solid;
     text-align: center;
     width: 100%;
     padding-left: 3em;
     padding-right: 3em;
+    background-color: lightblue;
+    margin: 5px;
     
 }
 
 div .row {
     justify-content: center;
+}
+
+h5 {
+    padding-right: 1em;
 }
 
