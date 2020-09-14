@@ -101,77 +101,67 @@ var searchWeather = function (input) {
                     return response;
                 })
                 .then(function (response) {
-                    
+
                     var iconEl = document.createElement("img");
                     iconEl.src = response.url;
                     city.appendChild(iconEl);
                 });
 
-                    var lat = response1.coord.lat;
-                    var lon = response1.coord.lon;
+            var lat = response1.coord.lat;
+            var lon = response1.coord.lon;
 
-                    // Fetch UV index and color code it
-                    fetch('https://api.openweathermap.org/data/2.5/uvi?lat=' + lat + '&lon=' + lon + '&appid=5fbadc263ee1b5151313ef1a2b7ed927')
-                        .then(function (response2) {
-                            return response2.json();
-                        })
+            // Fetch UV index and color code it
+            fetch('https://api.openweathermap.org/data/2.5/uvi?lat=' + lat + '&lon=' + lon + '&appid=5fbadc263ee1b5151313ef1a2b7ed927')
+                .then(function (response2) {
+                    return response2.json();
+                })
 
-                        .then(function (response2) {
-                            console.log(response2.value);
+                .then(function (response2) {
+                    console.log(response2.value);
 
-                            uv = document.querySelector("#uv");
-                            uv.innerHTML = '';
-                            var uvVariables = response2.value;
-                            var uvEl = document.createElement("h4");
-                            uvEl.innerHTML = "UV Index: " + uvVariables;
-                            uv.appendChild(uvEl);
+                    uv = document.querySelector("#uv");
+                    uv.innerHTML = '';
+                    var uvVariables = response2.value;
+                    var uvEl = document.createElement("h4");
+                    uvEl.innerHTML = "UV Index: " + uvVariables;
+                    uv.appendChild(uvEl);
 
-                            if (response2.value < 5) {
-                                uvEl.style.backgroundColor = "green";
-                            }
-                            if (response2.value < 8) {
-                                uvEl.style.backgroundColor = "yellow";
-                            }
-                        });
-
-                    fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + searchedCity + '&appid=5fbadc263ee1b5151313ef1a2b7ed927')
-                        .then(function (response3) {
-                            return response3.json();
-                        })
-
-                        .then(function (response3) {
-                            console.log(response3);
-
-                            var newrow = $("<div>").attr("class", "forecast");
-                            $("#fiveDay").append(newrow);
-
-
-                            //loop through array response to find the forecasts for 15:00
-                            for (var i = 0; i < response3.list.length; i++) {
-                                if (response3.list[i].dt_txt.indexOf("15:00:00") !== -1) {
-                                    var newCol = $("<div>").attr("class", "col-md-2");
-                                    newrow.append(newCol);
-
-                                    var newCard = $("<div>").attr("class", "card text-white bg-primary");
-                                    
-
-                                    var cardHead = $("<div>").attr("class", "card-header").text(moment(response3.list[i].dt, "X").format("MMM Do"));
-                                    
-
-                                    var cardImg = $("<img>").attr("class", "card-img-top").attr("src", "https://openweathermap.org/img/wn/" + response3.list[i].weather[0].icon + "@2x.png");
-                                    
-
-                                    var bodyDiv = $("<div>").attr("class", "card-body");
-                                    
-                                    newCol.append(newCard.append(bodyDiv.append(cardHead, cardImg)));
-
-                                    bodyDiv.append($("<p>").attr("class", "card-text").html("Temp: " + response3.list[i].main.temp + " &#8457;"));
-                                    bodyDiv.append($("<p>").attr("class", "card-text").text("Humidity: " + response3.list[i].main.humidity + "%"));
-                                    
-
-                                }
-                            }
-                        });
+                    if (response2.value < 5) {
+                        uvEl.style.backgroundColor = "green";
+                    }
+                    if (response2.value < 8) {
+                        uvEl.style.backgroundColor = "yellow";
+                    }
                 });
-        }
+
+            fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + searchedCity + '&appid=5fbadc263ee1b5151313ef1a2b7ed927')
+                .then(function (response3) {
+                    return response3.json();
+                })
+
+                .then(function (response3) {
+                    console.log(response3);
+
+                    var newrow = $("<div>").attr("class", "forecast row-1 d-flex");
+                    $("#fiveDay").append(newrow);
+
+
+                    //loop through array response to find the forecasts for 15:00
+                    for (var i = 0; i < response3.list.length; i++) {
+                        if (response3.list[i].dt_txt.indexOf("15:00:00") !== -1) {
+                            var newCol = $("<div>").attr("class", "col d-flex");
+                            var newCard = $("<div>").attr("class", "card text-white bg-primary");
+                            var cardHead = $("<div>").attr("class", "card-header").text(moment(response3.list[i].dt, "X").format("MMM Do"));
+                            var cardImg = $("<img>").attr("class", "card-img-top").attr("src", "https://openweathermap.org/img/wn/" + response3.list[i].weather[0].icon + "@2x.png");
+                            var bodyDiv = $("<div>").attr("class", "card-body");
+                            var temp = $("<p>").attr("class", "card-text").html("Temp: " + tempVariables + " &#8457;");
+                            var humidity = $("<p>").attr("class", "card-text").text("Humidity: " + response3.list[i].main.humidity + "%");
+
+                            newCol.append(newCard.append(bodyDiv.append(cardHead, cardImg, temp, humidity)));
+                            newrow.append(newCol);
+                        }
+                    }
+                });
+        });
+}
 
