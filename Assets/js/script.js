@@ -1,3 +1,4 @@
+// Loads page and any local storage
 var loadPage = function () {
     var cityValue = localStorage.getItem("city");
 
@@ -10,15 +11,13 @@ var loadPage = function () {
         }
     }
 }
-
+//Add search hitory to page an make clickable 
 function addSearchHistoryItem(city) {
     var history = document.createElement("button");
     history.innerHTML = city;
     var searched = document.querySelector("#searched");
     searched.appendChild(history);
     history.addEventListener("click", () => {
-        console.log("I was clicked");
-        console.log(event.target.textContent);
         searchWeather(event.target.textContent);
     });
 }
@@ -42,7 +41,7 @@ function addSearchHistory(city) {
     localStorage.setItem("city", cityString);
 }
 
-
+// Place date and time at head of page
 var date = moment().format("dddd, MMMM Do YYYY");
 $("#currentDay").text(date)
 
@@ -55,7 +54,7 @@ function handleSearchEvent() {
     addSearchHistory(input);
     addSearchHistoryItem(input);
 }
-
+// Fetch current weather from city entered
 var searchWeather = function (input) {
 
     fetch('https://api.openweathermap.org/data/2.5/weather?q=' + input + '&units=imperial&appid=5fbadc263ee1b5151313ef1a2b7ed927')
@@ -95,6 +94,7 @@ var searchWeather = function (input) {
             windEl.innerHTML = "Wind Speed: " + windVariables + " MPH";
             wind.appendChild(windEl);
 
+            // Fetch weather icon for current weather
             var icon = response1.weather[0].icon;
             fetch('https://openweathermap.org/img/wn/' + icon + '@2x.png')
                 .then(function (response) {
@@ -110,6 +110,7 @@ var searchWeather = function (input) {
                     var lat = response1.coord.lat;
                     var lon = response1.coord.lon;
 
+                    // Fetch UV index and color code it
                     fetch('https://api.openweathermap.org/data/2.5/uvi?lat=' + lat + '&lon=' + lon + '&appid=5fbadc263ee1b5151313ef1a2b7ed927')
                         .then(function (response2) {
                             return response2.json();
@@ -148,7 +149,7 @@ var searchWeather = function (input) {
                             //loop through array response to find the forecasts for 15:00
                             for (var i = 0; i < response3.list.length; i++) {
                                 if (response3.list[i].dt_txt.indexOf("15:00:00") !== -1) {
-                                    var newCol = $("<div>").attr("class", "one-sixth");
+                                    var newCol = $("<div>").attr("class", "");
                                     newrow.append(newCol);
 
                                     var newCard = $("<div>").attr("class", "card text-white bg-primary");
@@ -163,8 +164,11 @@ var searchWeather = function (input) {
                                     var bodyDiv = $("<div>").attr("class", "card-body");
                                     newCard.append(bodyDiv);
 
+                                    newCol.append(newCard.append(cardHead, cardImg,bodyDiv));
+
                                     bodyDiv.append($("<p>").attr("class", "card-text").html("Temp: " + response3.list[i].main.temp + " &#8457;"));
                                     bodyDiv.append($("<p>").attr("class", "card-text").text("Humidity: " + response3.list[i].main.humidity + "%"));
+                                    
 
                                 }
                             }
