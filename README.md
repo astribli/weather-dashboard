@@ -3,7 +3,7 @@
 A simple web-app that allows you to search for a city and get the current weather and 5 day forecast. You can experience the deployed project here: https://astribli.github.io/weather-dashboard/
 
 Screenshot of deployed app
-![](2020-09-13-21-24-46.png)
+![](2020-09-13-21-32-58.png)
 
 ## Usage
 1. Simply type the name of the city in the field provided and click the search button.
